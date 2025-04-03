@@ -50,6 +50,7 @@
             </createData>
 
             <magentoCron groups="index" stepKey="reindexInvalidatedIndices"/>
+            <magentoCLI command="indexer:reset"  stepKey="resetIndexer"/>
             <magentoCLI command="indexer:reindex" arguments="catalogsearch_fulltext" stepKey="performReindexAfterElasticSearchEnable"/>
             <magentoCLI command="cache:clean" arguments="full_page" stepKey="cleanCacheAfterElasticSearchEnable"/>
         </before>
