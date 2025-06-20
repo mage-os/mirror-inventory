@@ -77,5 +77,6 @@ class ImportGeoNamesCommand extends Command
         }
 
         $output->writeln('Done.');
+        return Command::SUCCESS;
     }
 }
