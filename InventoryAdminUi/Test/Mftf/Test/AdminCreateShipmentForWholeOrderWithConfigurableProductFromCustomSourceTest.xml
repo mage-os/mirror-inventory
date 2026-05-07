@@ -20,6 +20,9 @@
         </annotations>
 
         <before>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+            <!--Disable all sources.-->
+            <actionGroup ref="DisableAllSourcesActionGroup" stepKey="disableAllSource"/>
             <!--Create test data.-->
             <createData entity="SimpleSubCategory" stepKey="category"/>
             <createData entity="ApiConfigurableProduct" stepKey="configurableProduct">
@@ -56,11 +59,11 @@
                 <requiredEntity createDataKey="stock"/>
                 <requiredEntity createDataKey="source1"/>
             </createData>
+            <comment userInput="BIC workaround" stepKey="loginToAdminArea"/>
             <createData entity="SourceStockLinked1" stepKey="sourceStockLink2">
                 <requiredEntity createDataKey="stock"/>
                 <requiredEntity createDataKey="source2"/>
             </createData>
-            <actionGroup ref="AdminLoginActionGroup" stepKey="loginToAdminArea"/>
             <!--Assign additional source to configurable product.-->
             <amOnPage url="{{AdminProductEditPage.url($configurableChildProduct.id$)}}" stepKey="openProductEditPage"/>
             <actionGroup ref="UnassignSourceFromProductActionGroup" stepKey="unassignDefaultSourceFromProduct">
@@ -89,7 +92,9 @@
             <actionGroup ref="AdminLogoutActionGroup" stepKey="logoutFromAdminArea"/>
 
             <!-- Reindex invalidated indices after product attribute has been created/deleted -->
-            <magentoCron groups="index" stepKey="reindexInvalidatedIndices"/>
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
+                <argument name="indices" value=""/>
+            </actionGroup>
         </after>
 
         <!--Add configurable product to cart.-->
@@ -105,6 +110,7 @@
         <!--Place order.-->
         <actionGroup ref="GoToCheckoutFromMinicartActionGroup" stepKey="navigateToCheckoutPage"/>
         <actionGroup ref="StorefrontCheckoutClickNextButtonActionGroup" stepKey="clickOnNextButton"/>
+        <actionGroup ref="CheckoutSelectCheckMoneyOrderPaymentActionGroup" stepKey="selectCheckMoneyOrder"/>
         <actionGroup ref="ClickPlaceOrderActionGroup" stepKey="clickOnPlaceOrder"/>
         <grabTextFrom selector="{{CheckoutSuccessMainSection.orderNumber22}}" stepKey="orderNumber"/>
         <!--Create Shipment-->
@@ -129,4 +135,3 @@
         </actionGroup>
     </test>
 </tests>
-

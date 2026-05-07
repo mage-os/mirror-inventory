@@ -159,7 +159,9 @@ class BundleProductChildSourceUpdateTest extends WebapiAbstract
         $this->addSourceItems($this->sourceItems);
         $actualData = $this->getSourceItems('SKU-4');
         self::assertEquals(2, $actualData['total_count']);
-        AssertArrayContains::assert($this->sourceItems, $actualData['items']);
+        foreach ($this->sourceItems as $sourceItem) {
+            self::assertContainsEquals($sourceItem, $actualData['items']);
+        }
     }
 
     #[

@@ -49,7 +49,9 @@
             <deleteData createDataKey="category" stepKey="deleteCategory"/>
             <deleteData createDataKey="configurableProduct" stepKey="deleteConfigurable"/>
             <deleteData createDataKey="additionalStockMainWebsite" stepKey="deleteMainWebsiteStock"/>
-            <magentoCron groups="index" stepKey="reindex"/>
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex">
+                <argument name="indices" value=""/>
+            </actionGroup>
         </after>
 
         <!--Assign category and create configurable variations.-->
@@ -96,9 +98,9 @@
         <waitForElementVisible selector="{{StorefrontProductPageSection.successMsg}}" time="30" stepKey="waitForProductAdded"/>
         <!-- Place Order -->
         <actionGroup ref="GoToCheckoutFromMinicartActionGroup" stepKey="goToCheckoutFromMinicart"/>
-        <waitForElementClickable selector="{{CheckoutPaymentSection.cartItemsArea}}" stepKey="waitForCartItemsClickable"/>
-        <waitForElementNotVisible selector="{{CheckoutPaymentSection.cartItemsAreaActive}}" stepKey="waitForCartItemsActive"/>
-        <click selector="{{CheckoutPaymentSection.cartItemsArea}}" stepKey="exposeMiniCart"/>
+        <comment userInput="BIC Workaround" stepKey="waitForCartItemsClickable"/>
+        <comment userInput="BIC Workaround" stepKey="waitForCartItemsActive"/>
+        <conditionalClick selector="{{CheckoutPaymentSection.cartItemsArea}}" dependentSelector="{{CheckoutPaymentSection.cartItemsArea}}"  visible="true"  stepKey="exposeMiniCart"/>
         <waitForPageLoad stepKey="waitForLoadingMaskForCartItem"/>
         <actionGroup ref="StorefrontCheckoutClickNextButtonActionGroup" stepKey="clickNext"/>
         <comment userInput="BIC workaround" stepKey="waitForLoadingMaskForPayment"/>
